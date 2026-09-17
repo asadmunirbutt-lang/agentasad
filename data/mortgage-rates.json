@@ -1,0 +1,20 @@
+{
+  "updated": "2026-09-15",
+  "source": "Freddie Mac Primary Mortgage Market Survey via FRED",
+  "rates": {
+    "rate_30yr": 6.78,
+    "rate_15yr": 6.07,
+    "rate_5arm": 6.32
+  },
+  "market": {
+    "median_price": 342000,
+    "median_price_yoy": 7.4,
+    "active_listings": 1187,
+    "days_on_market": 21,
+    "months_supply": 1.7,
+    "closed_sales_ytd": 4821,
+    "pending_sales": 312,
+    "list_to_sale_ratio": 98.6
+  },
+  "note": "Auto-updated weekly by GitHub Actions. Market data for Albany County/Capital Region NY."
+}

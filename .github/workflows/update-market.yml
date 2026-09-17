@@ -1,0 +1,68 @@
+name: Update Mortgage Rates & Market Data
+
+on:
+  schedule:
+    - cron: '0 14 * * 1'  # Every Monday at 14:00 UTC (10am ET)
+  workflow_dispatch:        # Allow manual trigger
+
+permissions:
+  contents: write
+
+jobs:
+  update-rates:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Fetch mortgage rates from FRED API
+        env:
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+        run: |
+          TODAY=$(date -u +%Y-%m-%d)
+
+          fetch_rate() {
+            local series=$1
+            curl -s "https://api.stlouisfed.org/fred/series/observations?series_id=${series}&api_key=${FRED_API_KEY}&sort_order=desc&limit=1&file_type=json" \
+              | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['observations'][0]['value'])"
+          }
+
+          RATE_30=$(fetch_rate "MORTGAGE30US")
+          RATE_15=$(fetch_rate "MORTGAGE15US")
+          RATE_5=$(fetch_rate "MORTGAGE5US")
+
+          # Read current market data to preserve it
+          MARKET_JSON=$(python3 -c "
+          import json
+          with open('data/mortgage-rates.json') as f:
+              d = json.load(f)
+          print(json.dumps(d['market']))
+          ")
+
+          cat > data/mortgage-rates.json << EOF
+          {
+            "updated": "${TODAY}",
+            "source": "Freddie Mac Primary Mortgage Market Survey via FRED",
+            "rates": {
+              "rate_30yr": ${RATE_30},
+              "rate_15yr": ${RATE_15},
+              "rate_5arm": ${RATE_5}
+            },
+            "market": ${MARKET_JSON},
+            "note": "Auto-updated weekly by GitHub Actions. Market data for Albany County/Capital Region NY."
+          }
+          EOF
+
+          echo "Updated rates: 30yr=${RATE_30}, 15yr=${RATE_15}, 5/1ARM=${RATE_5}"
+
+      - name: Commit updated data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/mortgage-rates.json
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Auto-update: mortgage rates $(date -u +%Y-%m-%d)"
+            git push
+          fi
