@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free NY Real Estate Mock Exam | AgentAsad.com</title>
+  <meta name="description" content="Take a free 100-question NY real estate practice exam with 500 questions in our bank. Covers all exam topics. Get your score and study tips.">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-bg: #060a12;
+      --color-bg-2: #0f1420;
+      --color-bg-3: #161e30;
+      --color-border: rgba(255,255,255,0.08);
+      --color-text: #c0d0e0;
+      --color-heading: #eef2f7;
+      --color-theme: #c8a96e;
+      --color-theme-2: #e8c98e;
+      --color-link: #6ea8fe;
+    }
+    * { box-sizing: border-box; }
+    body { background: var(--color-bg); color: var(--color-text); font-family: 'Inter', sans-serif; margin: 0; min-height: 100vh; }
+
+    /* NAV */
+    .navbar { background: rgba(6,10,18,0.97); border-bottom: 1px solid var(--color-border); padding: 12px 0; position: sticky; top: 0; z-index: 1000; }
+    .navbar-brand { color: var(--color-theme) !important; font-weight: 800; font-size: 1.3rem; letter-spacing: -0.5px; }
+    .nav-link { color: rgba(255,255,255,0.75) !important; font-size: 0.875rem; font-weight: 500; padding: 6px 12px !important; border-radius: 6px; transition: all 0.2s; }
+    .nav-link:hover, .nav-link.active { color: #fff !important; background: rgba(255,255,255,0.07); }
+    .navbar-toggler { border-color: var(--color-border); }
+    .navbar-toggler-icon { filter: invert(1); }
+    .dropdown-menu { background: var(--color-bg-2); border: 1px solid var(--color-border); border-radius: 10px; padding: 6px; min-width: 200px; }
+    .dropdown-item { color: var(--color-text) !important; border-radius: 6px; padding: 8px 14px; font-size: 0.875rem; }
+    .dropdown-item:hover { background: rgba(255,255,255,0.07) !important; color: #fff !important; }
+
+    /* HERO */
+    .exam-hero { background: linear-gradient(135deg, #0a0f1e 0%, #0f1520 50%, #0a0f1e 100%); border-bottom: 1px solid var(--color-border); padding: 60px 0 40px; text-align: center; }
+    .exam-hero h1 { color: var(--color-heading); font-size: clamp(1.75rem, 4vw, 2.8rem); font-weight: 800; margin-bottom: 12px; }
+    .exam-hero .lead { color: var(--color-text); font-size: 1.05rem; max-width: 620px; margin: 0 auto 20px; }
+    .badge-stat { background: rgba(200,169,110,0.15); color: var(--color-theme); border: 1px solid rgba(200,169,110,0.3); border-radius: 20px; padding: 4px 14px; font-size: 0.8rem; font-weight: 600; display: inline-block; margin: 3px; }
+
+    /* GATE SCREEN */
+    #gate-screen { max-width: 480px; margin: 50px auto; padding: 0 20px; }
+    .gate-card { background: var(--color-bg-2); border: 1px solid var(--color-border); border-radius: 16px; padding: 36px 32px; }
+    .gate-card h2 { color: var(--color-heading); font-size: 1.5rem; font-weight: 700; margin-bottom: 8px; }
+    .gate-card p { color: var(--color-text); font-size: 0.9rem; margin-bottom: 24px; }
+    .form-label { color: var(--color-text); font-size: 0.875rem; font-weight: 500; }
+    .form-control { background: var(--color-bg-3); border: 1px solid var(--color-border); color: var(--color-heading); border-radius: 8px; padding: 10px 14px; font-size: 0.9rem; }
+    .form-control:focus { background: var(--color-bg-3); border-color: var(--color-theme); box-shadow: 0 0 0 3px rgba(200,169,110,0.15); color: var(--color-heading); outline: none; }
+    .form-control::placeholder { color: rgba(255,255,255,0.3); }
+    .btn-start { background: var(--color-theme); color: #0a0f1e; border: none; border-radius: 8px; padding: 12px 24px; font-weight: 700; font-size: 0.95rem; width: 100%; cursor: pointer; transition: all 0.2s; }
+    .btn-start:hover { background: var(--color-theme-2); transform: translateY(-1px); }
+    .btn-start:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .gate-notice { font-size: 0.78rem; color: rgba(255,255,255,0.4); margin-top: 14px; text-align: center; }
+    .gate-features { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 28px; }
+    .gate-feat { background: var(--color-bg-3); border: 1px solid var(--color-border); border-radius: 8px; padding: 10px 12px; font-size: 0.8rem; color: var(--color-text); }
+    .gate-feat i { color: var(--color-theme); margin-right: 6px; }
+
+    /* EXAM SCREEN */
+    #exam-screen { display: none; max-width: 820px; margin: 0 auto; padding: 30px 20px 60px; }
+    .exam-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
+    .exam-progress-wrap { flex: 1; min-width: 200px; }
+    .q-counter { color: var(--color-heading); font-weight: 700; font-size: 1rem; margin-bottom: 6px; }
+    .progress-bar-outer { background: var(--color-bg-3); border-radius: 8px; height: 8px; overflow: hidden; }
+    .progress-bar-inner { background: var(--color-theme); height: 100%; border-radius: 8px; transition: width 0.4s ease; }
+    .timer-box { background: var(--color-bg-2); border: 1px solid var(--color-border); border-radius: 10px; padding: 8px 18px; text-align: center; }
+    .timer-label { font-size: 0.7rem; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 1px; }
+    .timer-val { color: var(--color-theme); font-size: 1.3rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+    .timer-val.warning { color: #f87171; }
+
+    .question-card { background: var(--color-bg-2); border: 1px solid var(--color-border); border-radius: 14px; padding: 28px; margin-bottom: 16px; }
+    .q-category { font-size: 0.75rem; color: var(--color-theme); text-transform: uppercase; letter-spacing: 1.2px; font-weight: 600; margin-bottom: 10px; }
+    .q-text { color: var(--color-heading); font-size: 1.05rem; font-weight: 600; line-height: 1.5; margin-bottom: 20px; }
+    .option-btn { display: flex; align-items: flex-start; gap: 12px; width: 100%; background: var(--color-bg-3); border: 1px solid var(--color-border); border-radius: 10px; padding: 13px 16px; cursor: pointer; text-align: left; transition: all 0.18s; margin-bottom: 8px; color: var(--color-text); font-size: 0.9rem; }
+    .option-btn:hover:not(:disabled) { border-color: rgba(200,169,110,0.5); background: rgba(200,169,110,0.07); color: var(--color-heading); }
+    .option-btn .opt-letter { background: rgba(255,255,255,0.08); border-radius: 6px; min-width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8rem; color: rgba(255,255,255,0.6); flex-shrink: 0; margin-top: 1px; }
+    .option-btn.correct { background: rgba(34,197,94,0.12) !important; border-color: rgba(34,197,94,0.5) !important; color: #86efac !important; }
+    .option-btn.correct .opt-letter { background: rgba(34,197,94,0.2); color: #86efac; }
+    .option-btn.wrong { background: rgba(239,68,68,0.12) !important; border-color: rgba(239,68,68,0.5) !important; color: #fca5a5 !important; }
+    .option-btn.wrong .opt-letter { background: rgba(239,68,68,0.2); color: #fca5a5; }
+    .option-btn:disabled { cursor: default; }
+
+    .explanation-box { background: rgba(200,169,110,0.08); border: 1px solid rgba(200,169,110,0.2); border-radius: 10px; padding: 14px 16px; margin-top: 12px; font-size: 0.875rem; color: var(--color-text); line-height: 1.55; display: none; }
+    .explanation-box strong { color: var(--color-theme); }
+
+    .exam-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; flex-wrap: wrap; gap: 10px; }
+    .btn-nav { background: var(--color-bg-2); border: 1px solid var(--color-border); color: var(--color-text); border-radius: 8px; padding: 10px 22px; font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .btn-nav:hover { border-color: var(--color-theme); color: var(--color-heading); }
+    .btn-finish { background: var(--color-theme); border: none; color: #0a0f1e; border-radius: 8px; padding: 10px 28px; font-size: 0.875rem; font-weight: 700; cursor: pointer; transition: all 0.2s; display: none; }
+    .btn-finish:hover { background: var(--color-theme-2); }
+
+    /* RESULT SCREEN */
+    #result-screen { display: none; max-width: 820px; margin: 0 auto; padding: 40px 20px 80px; }
+    .result-hero { text-align: center; margin-bottom: 40px; }
+    .score-ring { width: 150px; height: 150px; border-radius: 50%; margin: 0 auto 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 4px solid; }
+    .score-ring.pass { border-color: #22c55e; background: rgba(34,197,94,0.08); }
+    .score-ring.fail { border-color: #f87171; background: rgba(248,113,113,0.08); }
+    .score-pct { font-size: 2.5rem; font-weight: 800; }
+    .score-ring.pass .score-pct { color: #86efac; }
+    .score-ring.fail .score-pct { color: #fca5a5; }
+    .score-label { font-size: 0.8rem; color: rgba(255,255,255,0.5); }
+    .result-hero h2 { color: var(--color-heading); font-size: 1.6rem; font-weight: 700; }
+    .result-hero p { color: var(--color-text); }
+
+    .cat-breakdown { background: var(--color-bg-2); border: 1px solid var(--color-border); border-radius: 14px; padding: 24px; margin-bottom: 24px; }
+    .cat-breakdown h3 { color: var(--color-heading); font-size: 1.1rem; font-weight: 700; margin-bottom: 18px; }
+    .cat-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .cat-name { width: 160px; font-size: 0.82rem; color: var(--color-text); flex-shrink: 0; }
+    .cat-bar-wrap { flex: 1; background: var(--color-bg-3); border-radius: 6px; height: 10px; overflow: hidden; }
+    .cat-bar { height: 100%; border-radius: 6px; transition: width 1s ease; }
+    .cat-score { font-size: 0.82rem; font-weight: 600; width: 50px; text-align: right; flex-shrink: 0; }
+
+    .result-cta { background: linear-gradient(135deg, var(--color-bg-2), var(--color-bg-3)); border: 1px solid rgba(200,169,110,0.25); border-radius: 14px; padding: 28px; text-align: center; }
+    .result-cta h3 { color: var(--color-heading); font-weight: 700; margin-bottom: 8px; }
+    .result-cta p { color: var(--color-text); font-size: 0.9rem; margin-bottom: 20px; }
+    .btn-retake { background: var(--color-bg-3); border: 1px solid var(--color-border); color: var(--color-text); border-radius: 8px; padding: 10px 24px; font-size: 0.875rem; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.2s; margin: 4px; }
+    .btn-retake:hover { border-color: var(--color-theme); color: var(--color-heading); }
+    .btn-cta { background: var(--color-theme); border: none; color: #0a0f1e; border-radius: 8px; padding: 12px 28px; font-size: 0.9rem; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.2s; margin: 4px; }
+    .btn-cta:hover { background: var(--color-theme-2); }
+
+    /* FOOTER */
+    footer { background: var(--color-bg-2); border-top: 1px solid var(--color-border); padding: 30px 0; text-align: center; color: rgba(255,255,255,0.4); font-size: 0.8rem; margin-top: 60px; }
+    footer a { color: var(--color-theme); text-decoration: none; }
+
+    @media (max-width: 576px) {
+      .gate-features { grid-template-columns: 1fr; }
+      .exam-header { flex-direction: column; align-items: stretch; }
+      .cat-name { width: 110px; font-size: 0.75rem; }
+    }
+
+    .spinner { display: inline-block; width: 18px; height: 18px; border: 2px solid rgba(10,15,30,0.3); border-top-color: #0a0f1e; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 6px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .skip-link { position: absolute; left: -9999px; }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="navbar navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand" href="index.html"><i class="bi bi-house-fill me-1"></i> AgentAsad</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMain">
+      <ul class="navbar-nav ms-auto gap-1">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"><span>Find Homes</span></a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="live-market.html">Live Market</a></li>
+            <li><a class="dropdown-item" href="realtor-listings.html">Realtor Listings</a></li>
+            <li><a class="dropdown-item" href="zillow-listings.html">Zillow Listings</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown"><span>Get Licensed</span></a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="real-estate-license-exam.html">Exam Guide Hub</a></li>
+            <li><a class="dropdown-item active fw-bold" href="mock-exam.html">Free Mock Exam</a></li>
+            <li><hr class="dropdown-divider" style="border-color:rgba(255,255,255,0.08)"></li>
+            <li><a class="dropdown-item" href="license/new-york.html">New York</a></li>
+            <li><a class="dropdown-item" href="license/florida.html">Florida</a></li>
+            <li><a class="dropdown-item" href="license/texas.html">Texas</a></li>
+            <li><a class="dropdown-item" href="license/california.html">California</a></li>
+            <li><a class="dropdown-item" href="license/new-jersey.html">New Jersey</a></li>
+            <li><a class="dropdown-item" href="license/pennsylvania.html">Pennsylvania</a></li>
+            <li><a class="dropdown-item" href="license/georgia.html">Georgia</a></li>
+            <li><a class="dropdown-item" href="license/north-carolina.html">North Carolina</a></li>
+            <li><a class="dropdown-item" href="license/illinois.html">Illinois</a></li>
+            <li><a class="dropdown-item" href="license/colorado.html">Colorado</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="about-us.html">About Us</a></li>
+        <li class="nav-item"><a class="nav-link" href="buyers-guide.html">Buyers</a></li>
+        <li class="nav-item"><a class="nav-link" href="sellers-guide.html">Sellers</a></li>
+        <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
+        <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="exam-hero">
+  <div class="container">
+    <h1><i class="bi bi-mortarboard-fill me-2" style="color:var(--color-theme)"></i>Free NY Real Estate Mock Exam</h1>
+    <p class="lead">100 randomly selected questions from our 500-question bank. Covers all exam topics. See your score and weak areas instantly.</p>
+    <div>
+      <span class="badge-stat"><i class="bi bi-question-circle me-1"></i>500-Question Bank</span>
+      <span class="badge-stat"><i class="bi bi-clock me-1"></i>120-Min Timer</span>
+      <span class="badge-stat"><i class="bi bi-bar-chart me-1"></i>Category Breakdown</span>
+      <span class="badge-stat"><i class="bi bi-lightbulb me-1"></i>Instant Explanations</span>
+    </div>
+  </div>
+</div>
+
+<!-- GATE SCREEN -->
+<div id="gate-screen">
+  <div class="gate-card">
+    <h2>Start Your Practice Exam</h2>
+    <p>Enter your name and email to unlock the exam. We'll send you your score recap and study tips.</p>
+
+    <div class="gate-features">
+      <div class="gate-feat"><i class="bi bi-check-circle-fill"></i>100 questions per session</div>
+      <div class="gate-feat"><i class="bi bi-check-circle-fill"></i>Shuffle from 500-Q bank</div>
+      <div class="gate-feat"><i class="bi bi-check-circle-fill"></i>Show explanation per Q</div>
+      <div class="gate-feat"><i class="bi bi-check-circle-fill"></i>Score by category</div>
+    </div>
+
+    <form id="gate-form">
+      <div class="mb-3">
+        <label class="form-label" for="inp-name">Full Name</label>
+        <input type="text" id="inp-name" class="form-control" placeholder="Jane Smith" required autocomplete="name">
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="inp-email">Email Address</label>
+        <input type="email" id="inp-email" class="form-control" placeholder="you@example.com" required autocomplete="email">
+      </div>
+      <div id="gate-error" class="text-danger mb-3" style="font-size:0.85rem;display:none"></div>
+      <button type="submit" class="btn-start" id="btn-start-exam">
+        <span id="btn-start-text">Start Free Exam →</span>
+      </button>
+      <p class="gate-notice">No spam. Unsubscribe anytime. Your email is used to send your results and study resources.</p>
+    </form>
+  </div>
+</div>
+
+<!-- EXAM SCREEN -->
+<div id="exam-screen">
+  <div class="exam-header">
+    <div class="exam-progress-wrap">
+      <div class="q-counter">Question <span id="q-num">1</span> of 100</div>
+      <div class="progress-bar-outer">
+        <div class="progress-bar-inner" id="progress-bar" style="width:1%"></div>
+      </div>
+    </div>
+    <div class="timer-box">
+      <div class="timer-label">Time Left</div>
+      <div class="timer-val" id="timer-display">2:00:00</div>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <div class="q-category" id="q-category"></div>
+    <div class="q-text" id="q-text"></div>
+    <div id="options-container"></div>
+    <div class="explanation-box" id="explanation-box">
+      <strong>Explanation:</strong> <span id="explanation-text"></span>
+    </div>
+  </div>
+
+  <div class="exam-nav">
+    <button class="btn-nav" id="btn-prev" onclick="navigate(-1)" disabled>← Previous</button>
+    <span style="font-size:0.8rem;color:rgba(255,255,255,0.4)"><span id="answered-count">0</span>/100 answered</span>
+    <div>
+      <button class="btn-nav" id="btn-next" onclick="navigate(1)">Next →</button>
+      <button class="btn-finish" id="btn-finish" onclick="finishExam()">Finish Exam</button>
+    </div>
+  </div>
+</div>
+
+<!-- RESULT SCREEN -->
+<div id="result-screen">
+  <div class="result-hero">
+    <div class="score-ring" id="score-ring">
+      <div class="score-pct" id="score-pct">--</div>
+      <div class="score-label" id="score-label-small"></div>
+    </div>
+    <h2 id="result-title">Your Results</h2>
+    <p id="result-subtitle"></p>
+  </div>
+
+  <div class="cat-breakdown">
+    <h3><i class="bi bi-bar-chart-fill me-2" style="color:var(--color-theme)"></i>Score by Category</h3>
+    <div id="cat-breakdown-rows"></div>
+  </div>
+
+  <div class="result-cta">
+    <h3>Ready to Get Licensed in New York?</h3>
+    <p>Agent Asad is a licensed NY REALTOR® in the Capital Region. Whether you're starting your career or buying your first home — we're here to help.</p>
+    <div>
+      <button class="btn-retake" onclick="retakeExam()"><i class="bi bi-arrow-clockwise me-1"></i>Retake Exam</button>
+      <a href="real-estate-license-exam.html" class="btn-retake"><i class="bi bi-book me-1"></i>Study Guide</a>
+      <a href="contact.html" class="btn-cta"><i class="bi bi-telephone me-1"></i>Talk to Agent Asad</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <p>© 2026 AgentAsad.com · <a href="about-us.html">About</a> · <a href="contact.html">Contact</a> · <a href="real-estate-license-exam.html">Exam Hub</a></p>
+    <p style="margin-top:4px">Questions are for study purposes only and do not guarantee exam performance. Exam content and requirements change — verify with your state licensing authority.</p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="data/exam-questions.js"></script>
+<script>
+// ── STATE ───────────────────────────────────────────────────────────────────
+let SESSION = {
+  name: '', email: '',
+  questions: [],     // 100 shuffled questions
+  answers: {},       // {qIndex: chosenOptIndex}
+  current: 0,
+  timerInterval: null,
+  secondsLeft: 7200, // 120 min
+  submitted: false
+};
+
+// ── UTILITIES ────────────────────────────────────────────────────────────────
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function pick100() {
+  // Distribute proportionally across categories
+  const cats = {};
+  EXAM_QUESTIONS.forEach(q => { if (!cats[q.cat]) cats[q.cat] = []; cats[q.cat].push(q); });
+  const total = EXAM_QUESTIONS.length;
+  const selected = [];
+  let remaining = 100;
+  const catNames = Object.keys(cats);
+  catNames.forEach((cat, idx) => {
+    const proportion = cats[cat].length / total;
+    let count = (idx === catNames.length - 1) ? remaining : Math.round(proportion * 100);
+    count = Math.min(count, cats[cat].length);
+    remaining -= count;
+    selected.push(...shuffle(cats[cat]).slice(0, count));
+  });
+  return shuffle(selected);
+}
+
+function fmtTime(s) {
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const sec = s % 60;
+  return `${h}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+}
+
+// ── WEB3FORMS EMAIL SEND ─────────────────────────────────────────────────────
+async function sendEmailViaWeb3Forms(name, email, score, pct) {
+  const ACCESS_KEY = '5a0dda30-6cc0-44e2-8a65-0ca5593d0275';
+  try {
+    const cats = {};
+    SESSION.questions.forEach((q, i) => {
+      if (!cats[q.cat]) cats[q.cat] = { correct: 0, total: 0 };
+      cats[q.cat].total++;
+      if (SESSION.answers[i] === q.ans) cats[q.cat].correct++;
+    });
+    const breakdown = Object.entries(cats).map(([c, v]) =>
+      `${c}: ${v.correct}/${v.total} (${Math.round(v.correct/v.total*100)}%)`
+    ).join('\n');
+
+    const body = `
+Name: ${name}
+Email: ${email}
+Score: ${score}/100 (${pct}%) — ${pct >= 70 ? 'PASS' : 'FAIL'}
+
+Category Breakdown:
+${breakdown}
+
+Exam taken on: ${new Date().toLocaleString()}
+    `.trim();
+
+    await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({
+        access_key: ACCESS_KEY,
+        subject: `Mock Exam Result — ${name} — ${pct}%`,
+        from_name: name,
+        email: email,
+        message: body,
+        botcheck: ''
+      })
+    });
+  } catch(e) { /* silently fail */ }
+}
+
+// ── GATE FORM ────────────────────────────────────────────────────────────────
+document.getElementById('gate-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const name = document.getElementById('inp-name').value.trim();
+  const email = document.getElementById('inp-email').value.trim();
+  if (!name || !email) return;
+
+  const btn = document.getElementById('btn-start-exam');
+  const btnText = document.getElementById('btn-start-text');
+  btn.disabled = true;
+  btnText.innerHTML = '<span class="spinner"></span>Loading exam…';
+
+  SESSION.name = name;
+  SESSION.email = email;
+  SESSION.questions = pick100();
+  SESSION.answers = {};
+  SESSION.current = 0;
+  SESSION.secondsLeft = 7200;
+  SESSION.submitted = false;
+
+  // Small delay for UX
+  await new Promise(r => setTimeout(r, 600));
+
+  document.getElementById('gate-screen').style.display = 'none';
+  document.getElementById('exam-screen').style.display = 'block';
+
+  startTimer();
+  renderQuestion();
+
+  btn.disabled = false;
+  btnText.textContent = 'Start Free Exam →';
+});
+
+// ── TIMER ────────────────────────────────────────────────────────────────────
+function startTimer() {
+  const el = document.getElementById('timer-display');
+  SESSION.timerInterval = setInterval(() => {
+    SESSION.secondsLeft--;
+    el.textContent = fmtTime(SESSION.secondsLeft);
+    if (SESSION.secondsLeft <= 300) el.classList.add('warning');
+    if (SESSION.secondsLeft <= 0) { clearInterval(SESSION.timerInterval); finishExam(); }
+  }, 1000);
+}
+
+// ── RENDER QUESTION ───────────────────────────────────────────────────────────
+function renderQuestion() {
+  const idx = SESSION.current;
+  const q = SESSION.questions[idx];
+  const answered = SESSION.answers[idx] !== undefined;
+  const total = SESSION.questions.length;
+
+  document.getElementById('q-num').textContent = idx + 1;
+  document.getElementById('progress-bar').style.width = `${((idx + 1) / total) * 100}%`;
+  document.getElementById('q-category').textContent = q.cat;
+  document.getElementById('q-text').textContent = q.q;
+  document.getElementById('answered-count').textContent = Object.keys(SESSION.answers).length;
+
+  // Options
+  const container = document.getElementById('options-container');
+  container.innerHTML = '';
+  const letters = ['A', 'B', 'C', 'D'];
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerHTML = `<span class="opt-letter">${letters[i]}</span><span>${opt}</span>`;
+    btn.disabled = answered;
+
+    if (answered) {
+      if (i === q.ans) btn.classList.add('correct');
+      else if (i === SESSION.answers[idx]) btn.classList.add('wrong');
+    }
+
+    btn.addEventListener('click', () => selectAnswer(i));
+    container.appendChild(btn);
+  });
+
+  // Explanation
+  const expBox = document.getElementById('explanation-box');
+  const expText = document.getElementById('explanation-text');
+  if (answered) {
+    expText.textContent = q.exp;
+    expBox.style.display = 'block';
+  } else {
+    expBox.style.display = 'none';
+  }
+
+  // Nav buttons
+  document.getElementById('btn-prev').disabled = idx === 0;
+  const isLast = idx === total - 1;
+  document.getElementById('btn-next').style.display = isLast ? 'none' : 'inline-block';
+  document.getElementById('btn-finish').style.display = isLast ? 'inline-block' : 'none';
+}
+
+function selectAnswer(optIdx) {
+  const idx = SESSION.current;
+  if (SESSION.answers[idx] !== undefined) return;
+  SESSION.answers[idx] = optIdx;
+  renderQuestion();
+}
+
+function navigate(dir) {
+  SESSION.current = Math.max(0, Math.min(SESSION.questions.length - 1, SESSION.current + dir));
+  renderQuestion();
+}
+
+// ── FINISH ────────────────────────────────────────────────────────────────────
+function finishExam() {
+  if (SESSION.submitted) return;
+  SESSION.submitted = true;
+  clearInterval(SESSION.timerInterval);
+
+  // Score
+  let correct = 0;
+  SESSION.questions.forEach((q, i) => {
+    if (SESSION.answers[i] === q.ans) correct++;
+  });
+  const pct = Math.round((correct / SESSION.questions.length) * 100);
+  const pass = pct >= 70;
+
+  // Send email (async, non-blocking)
+  sendEmailViaWeb3Forms(SESSION.name, SESSION.email, correct, pct);
+
+  // Show results
+  document.getElementById('exam-screen').style.display = 'none';
+  document.getElementById('result-screen').style.display = 'block';
+
+  const ring = document.getElementById('score-ring');
+  ring.className = 'score-ring ' + (pass ? 'pass' : 'fail');
+  document.getElementById('score-pct').textContent = pct + '%';
+  document.getElementById('score-label-small').textContent = correct + '/100';
+  document.getElementById('result-title').textContent = pass ? '🎉 Congratulations — You Passed!' : 'Keep Studying — You\'ve Got This';
+  document.getElementById('result-subtitle').textContent =
+    pass
+      ? `You scored ${pct}% — above the 70% passing threshold. Great work, ${SESSION.name}!`
+      : `You scored ${pct}% — just below the 70% passing mark. Review the categories below and retake.`;
+
+  // Category breakdown
+  const cats = {};
+  SESSION.questions.forEach((q, i) => {
+    if (!cats[q.cat]) cats[q.cat] = { correct: 0, total: 0 };
+    cats[q.cat].total++;
+    if (SESSION.answers[i] === q.ans) cats[q.cat].correct++;
+  });
+
+  const container = document.getElementById('cat-breakdown-rows');
+  container.innerHTML = '';
+  Object.entries(cats).sort((a,b) => {
+    const pA = a[1].correct / a[1].total;
+    const pB = b[1].correct / b[1].total;
+    return pA - pB; // lowest first
+  }).forEach(([cat, v]) => {
+    const p = Math.round(v.correct / v.total * 100);
+    const color = p >= 80 ? '#22c55e' : p >= 60 ? '#f59e0b' : '#f87171';
+    const row = document.createElement('div');
+    row.className = 'cat-row';
+    row.innerHTML = `
+      <div class="cat-name">${cat}</div>
+      <div class="cat-bar-wrap"><div class="cat-bar" style="width:0%;background:${color}" data-w="${p}"></div></div>
+      <div class="cat-score" style="color:${color}">${v.correct}/${v.total}</div>`;
+    container.appendChild(row);
+  });
+
+  // Animate bars
+  setTimeout(() => {
+    document.querySelectorAll('.cat-bar').forEach(bar => {
+      bar.style.width = bar.dataset.w + '%';
+    });
+  }, 100);
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── RETAKE ────────────────────────────────────────────────────────────────────
+function retakeExam() {
+  SESSION.questions = pick100();
+  SESSION.answers = {};
+  SESSION.current = 0;
+  SESSION.secondsLeft = 7200;
+  SESSION.submitted = false;
+
+  document.getElementById('result-screen').style.display = 'none';
+  document.getElementById('exam-screen').style.display = 'block';
+
+  document.getElementById('timer-display').classList.remove('warning');
+  startTimer();
+  renderQuestion();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
