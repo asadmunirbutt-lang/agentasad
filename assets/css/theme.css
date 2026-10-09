@@ -655,7 +655,7 @@ ul { padding-left: 0; }
   border-radius: var(--radius);
   overflow: hidden;
   transition: var(--transition);
-  height: 100%;
+  height: auto;
   display: flex;
   flex-direction: column;
   box-shadow: var(--shadow-sm);
