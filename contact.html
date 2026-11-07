@@ -202,7 +202,7 @@ layout: null
         <div class="contact-card">
           <div class="icon"><i class="fas fa-phone-alt"></i></div>
           <h5>Phone</h5>
-          <p><a href="tel:+13179910361">+1 (317) 991-0361</a></p>
+          <p><a href="tel:+15189123561">(518) 912-3561</a></p>
         </div>
       </div>
     </div>
@@ -215,24 +215,25 @@ layout: null
     <div class="row justify-content-center">
       <div class="col-lg-7">
         <div style="background: var(--color-bg-3); border: 1px solid var(--color-border); border-radius: 8px; padding: 40px;">
-          <h4 style="color: var(--color-heading); margin-bottom: 24px;">Send a Message</h4>
-          <form action="mailto:amb@grscorp.us" method="post" enctype="text/plain">
+          <h4 style="color: var(--color-heading); margin-bottom: 8px;">Send a Message</h4>
+          <p style="color: var(--color-text); font-size: 13px; margin-bottom: 24px;">Fill out the form below and Asad will reach out within a few hours.</p>
+          <form id="contact-form" onsubmit="sendToWhatsApp(event)">
             <div class="row g-3">
               <div class="col-sm-6">
-                <label class="form-label">First Name</label>
-                <input type="text" class="form-control" name="name" placeholder="Your name" required>
+                <label class="form-label">First Name *</label>
+                <input type="text" class="form-control" id="f-name" placeholder="Your name" required>
               </div>
               <div class="col-sm-6">
                 <label class="form-label">Phone</label>
-                <input type="tel" class="form-control" name="phone" placeholder="Your phone number">
+                <input type="tel" class="form-control" id="f-phone" placeholder="Your phone number">
               </div>
               <div class="col-12">
-                <label class="form-label">Email</label>
-                <input type="email" class="form-control" name="email" placeholder="your@email.com" required>
+                <label class="form-label">Email *</label>
+                <input type="email" class="form-control" id="f-email" placeholder="your@email.com" required>
               </div>
               <div class="col-12">
                 <label class="form-label">I'm interested in&hellip;</label>
-                <select class="form-select" name="interest">
+                <select class="form-select" id="f-interest">
                   <option value="">Select one</option>
                   <option>Buying a home</option>
                   <option>Selling a home</option>
@@ -242,13 +243,30 @@ layout: null
               </div>
               <div class="col-12">
                 <label class="form-label">Message</label>
-                <textarea class="form-control" name="message" rows="5" placeholder="Tell Asad a bit about what you're looking for..."></textarea>
+                <textarea class="form-control" id="f-message" rows="5" placeholder="Tell Asad a bit about what you're looking for..."></textarea>
               </div>
               <div class="col-12 mt-2">
-                <button type="submit" class="btn-send">Send Message</button>
+                <button type="submit" class="btn-send" style="width:100%;justify-content:center;gap:10px;display:flex;align-items:center;">
+                  <i class="fab fa-whatsapp" style="font-size:18px;"></i> Send via WhatsApp
+                </button>
+                <p style="color:var(--color-text);font-size:12px;text-align:center;margin-top:10px;">
+                  Or email directly: <a href="mailto:amb@grscorp.us" style="color:var(--color-theme);">amb@grscorp.us</a>
+                </p>
               </div>
             </div>
           </form>
+          <script>
+          function sendToWhatsApp(e) {
+            e.preventDefault();
+            var name = document.getElementById('f-name').value;
+            var phone = document.getElementById('f-phone').value;
+            var email = document.getElementById('f-email').value;
+            var interest = document.getElementById('f-interest').value || 'General inquiry';
+            var msg = document.getElementById('f-message').value;
+            var text = 'Hi Asad! I found you on agentasad.com.\n\nName: ' + name + '\nPhone: ' + (phone || 'N/A') + '\nEmail: ' + email + '\nInterest: ' + interest + (msg ? '\n\nMessage: ' + msg : '');
+            window.open('https://wa.me/15189123561?text=' + encodeURIComponent(text), '_blank');
+          }
+          </script>
         </div>
       </div>
       <div class="col-lg-4 pt-4 pt-lg-0 ps-lg-5">
@@ -257,7 +275,7 @@ layout: null
           <a class="social-link" href="https://www.facebook.com/asad.agent/" target="_blank"><i class="fab fa-facebook-f"></i></a>
           <a class="social-link" href="https://www.instagram.com/asadmb/" target="_blank"><i class="fab fa-instagram"></i></a>
           <a class="social-link" href="https://www.linkedin.com/in/asadmunirbutt/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
-          <a class="social-link" href="https://wa.me/13179910361" target="_blank"><i class="fab fa-whatsapp"></i></a>
+          <a class="social-link" href="https://wa.me/15189123561?text=Hi%20Asad!%20I%20found%20you%20on%20agentasad.com." target="_blank"><i class="fab fa-whatsapp"></i></a>
         </div>
         <hr style="border-color: var(--color-border); margin: 24px 0;">
         <h5 style="color: var(--color-heading); margin-bottom: 12px;">Office Hours</h5>
