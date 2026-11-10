@@ -20,11 +20,10 @@ jobs:
           FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
         run: |
           set -euo pipefail
-          TODAY=$(date -u +%Y-%m-%d)
 
           if [ -z "${FRED_API_KEY:-}" ]; then
             echo "ERROR: FRED_API_KEY secret is not set."
-            echo "Go to: GitHub repo → Settings → Secrets and variables → Actions → New repository secret"
+            echo "Go to: GitHub repo -> Settings -> Secrets and variables -> Actions -> New repository secret"
             echo "Name: FRED_API_KEY"
             echo "Get a free key at: https://fred.stlouisfed.org/docs/api/api_key.html"
             exit 1
@@ -39,17 +38,17 @@ jobs:
               exit 1
             fi
             echo "$response" | python3 -c "
-import sys, json
-try:
-    d = json.load(sys.stdin)
-    if 'error_message' in d:
-        print(f'FRED API error: {d[\"error_message\"]}', file=sys.stderr)
-        sys.exit(1)
-    print(d['observations'][0]['value'])
-except Exception as e:
-    print(f'Failed to parse FRED response: {e}', file=sys.stderr)
-    sys.exit(1)
-"
+          import sys, json
+          try:
+              d = json.load(sys.stdin)
+              if 'error_message' in d:
+                  print('FRED API error: ' + d['error_message'], file=sys.stderr)
+                  sys.exit(1)
+              print(d['observations'][0]['value'])
+          except Exception as e:
+              print('Failed to parse FRED response: ' + str(e), file=sys.stderr)
+              sys.exit(1)
+          "
           }
 
           echo "Fetching 30-year rate..."
@@ -59,29 +58,33 @@ except Exception as e:
           echo "Fetching 5/1 ARM rate..."
           RATE_5=$(fetch_rate "MORTGAGE5US")
 
-          # Read current market data to preserve it
-          MARKET_JSON=$(python3 -c "
-import json
-with open('data/mortgage-rates.json') as f:
-    d = json.load(f)
-print(json.dumps(d.get('market', {})))
-")
+          TODAY=$(date -u +%Y-%m-%d)
 
-          cat > data/mortgage-rates.json << JSONEOF
-{
-  "updated": "${TODAY}",
-  "source": "Freddie Mac Primary Mortgage Market Survey via FRED",
-  "rates": {
-    "rate_30yr": ${RATE_30},
-    "rate_15yr": ${RATE_15},
-    "rate_5arm": ${RATE_5}
-  },
-  "market": ${MARKET_JSON},
-  "note": "Auto-updated weekly by GitHub Actions. Market data for Albany County/Capital Region NY."
-}
-JSONEOF
+          python3 - "$RATE_30" "$RATE_15" "$RATE_5" "$TODAY" <<'PYEOF'
+          import sys, json
 
-          echo "Updated rates: 30yr=${RATE_30}, 15yr=${RATE_15}, 5/1ARM=${RATE_5}"
+          rate_30, rate_15, rate_5, today = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]
+
+          with open('data/mortgage-rates.json') as f:
+              existing = json.load(f)
+
+          data = {
+              "updated": today,
+              "source": "Freddie Mac Primary Mortgage Market Survey via FRED",
+              "rates": {
+                  "rate_30yr": float(rate_30),
+                  "rate_15yr": float(rate_15),
+                  "rate_5arm": float(rate_5)
+              },
+              "market": existing.get("market", {}),
+              "note": "Auto-updated weekly by GitHub Actions. Market data for Albany County/Capital Region NY."
+          }
+
+          with open('data/mortgage-rates.json', 'w') as f:
+              json.dump(data, f, indent=2)
+
+          print(f"Updated rates: 30yr={rate_30}, 15yr={rate_15}, 5/1ARM={rate_5}")
+          PYEOF
 
       - name: Commit updated data
         run: |
