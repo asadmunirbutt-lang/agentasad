@@ -32,11 +32,17 @@ jobs:
           fetch_rate() {
             local series=$1
             local response
-            response=$(curl -sf "https://api.stlouisfed.org/fred/series/observations?series_id=${series}&api_key=${FRED_API_KEY}&sort_order=desc&limit=1&file_type=json" 2>&1)
+            # Use -s (silent) WITHOUT -f so HTTP error bodies are captured, not discarded
+            response=$(curl -s "https://api.stlouisfed.org/fred/series/observations?series_id=${series}&api_key=${FRED_API_KEY}&sort_order=desc&limit=1&file_type=json" 2>/dev/null) || true
+
             if [ -z "$response" ]; then
-              echo "ERROR: Empty response from FRED API for series ${series}" >&2
+              echo "ERROR: No response received from FRED API for series ${series} (network error?)" >&2
               exit 1
             fi
+
+            # Print first 300 chars of response for debugging
+            echo "DEBUG FRED [${series}]: ${response:0:300}" >&2
+
             echo "$response" | python3 -c "
           import sys, json
           try:
@@ -44,7 +50,15 @@ jobs:
               if 'error_message' in d:
                   print('FRED API error: ' + d['error_message'], file=sys.stderr)
                   sys.exit(1)
-              print(d['observations'][0]['value'])
+              obs = d.get('observations', [])
+              if not obs:
+                  print('FRED API returned no observations for series', file=sys.stderr)
+                  sys.exit(1)
+              val = obs[0]['value']
+              if val == '.':
+                  print('FRED: no data yet for this series (value is \".\")', file=sys.stderr)
+                  sys.exit(1)
+              print(val)
           except Exception as e:
               print('Failed to parse FRED response: ' + str(e), file=sys.stderr)
               sys.exit(1)
@@ -53,10 +67,13 @@ jobs:
 
           echo "Fetching 30-year rate..."
           RATE_30=$(fetch_rate "MORTGAGE30US")
+          echo "30yr rate: $RATE_30"
           echo "Fetching 15-year rate..."
           RATE_15=$(fetch_rate "MORTGAGE15US")
+          echo "15yr rate: $RATE_15"
           echo "Fetching 5/1 ARM rate..."
           RATE_5=$(fetch_rate "MORTGAGE5US")
+          echo "5/1 ARM rate: $RATE_5"
 
           TODAY=$(date -u +%Y-%m-%d)
 
