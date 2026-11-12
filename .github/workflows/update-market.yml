@@ -23,25 +23,40 @@ jobs:
 
           if [ -z "${FRED_API_KEY:-}" ]; then
             echo "ERROR: FRED_API_KEY secret is not set."
-            echo "Go to: GitHub repo -> Settings -> Secrets and variables -> Actions -> New repository secret"
-            echo "Name: FRED_API_KEY"
-            echo "Get a free key at: https://fred.stlouisfed.org/docs/api/api_key.html"
             exit 1
           fi
 
           fetch_rate() {
             local series=$1
-            local response
-            # Use -s (silent) WITHOUT -f so HTTP error bodies are captured, not discarded
-            response=$(curl -s "https://api.stlouisfed.org/fred/series/observations?series_id=${series}&api_key=${FRED_API_KEY}&sort_order=desc&limit=1&file_type=json" 2>/dev/null) || true
+            local tmpfile
+            tmpfile=$(mktemp)
+            local curl_exit=0
+            local http_code
 
-            if [ -z "$response" ]; then
-              echo "ERROR: No response received from FRED API for series ${series} (network error?)" >&2
+            # Capture exit code, HTTP status, and body separately
+            http_code=$(curl -s -w "%{http_code}" -o "$tmpfile" \
+              "https://api.stlouisfed.org/fred/series/observations?series_id=${series}&api_key=${FRED_API_KEY}&sort_order=desc&limit=1&file_type=json" \
+              2>/dev/null) || curl_exit=$?
+
+            local response
+            response=$(cat "$tmpfile" 2>/dev/null || echo "")
+            rm -f "$tmpfile"
+
+            echo "DEBUG [${series}]: curl_exit=${curl_exit}, http_code=${http_code}, body_len=${#response}" >&2
+            if [ -n "$response" ]; then
+              echo "DEBUG [${series}]: body_preview=${response:0:300}" >&2
+            fi
+
+            if [ "${curl_exit}" -ne 0 ]; then
+              echo "ERROR: curl network failure (exit code ${curl_exit}) for series ${series}" >&2
+              echo "       Possible causes: DNS failure, connection refused, TLS error" >&2
               exit 1
             fi
 
-            # Print first 300 chars of response for debugging
-            echo "DEBUG FRED [${series}]: ${response:0:300}" >&2
+            if [ -z "$response" ]; then
+              echo "ERROR: Empty HTTP ${http_code} response for series ${series}" >&2
+              exit 1
+            fi
 
             echo "$response" | python3 -c "
           import sys, json
