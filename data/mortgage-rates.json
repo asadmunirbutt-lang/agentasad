@@ -1,10 +1,10 @@
 {
-  "updated": "2026-09-15",
+  "updated": "2026-11-12",
   "source": "Freddie Mac Primary Mortgage Market Survey via FRED",
   "rates": {
-    "rate_30yr": 6.78,
-    "rate_15yr": 6.07,
-    "rate_5arm": 6.32
+    "rate_30yr": 7.11,
+    "rate_15yr": 6.45,
+    "rate_5arm": 6.06
   },
   "market": {
     "median_price": 342000,
