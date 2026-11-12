@@ -26,6 +26,16 @@ jobs:
             exit 1
           fi
 
+          # Strip any accidental whitespace/newlines (common paste issue)
+          FRED_API_KEY=$(printf '%s' "${FRED_API_KEY}" | tr -d '[:space:]')
+
+          echo "DEBUG: FRED_API_KEY length=${#FRED_API_KEY}" >&2
+
+          if [ -z "${FRED_API_KEY}" ]; then
+            echo "ERROR: FRED_API_KEY is empty after stripping whitespace."
+            exit 1
+          fi
+
           fetch_rate() {
             local series=$1
             local tmpfile
@@ -33,7 +43,6 @@ jobs:
             local curl_exit=0
             local http_code
 
-            # Capture exit code, HTTP status, and body separately
             http_code=$(curl -s -w "%{http_code}" -o "$tmpfile" \
               "https://api.stlouisfed.org/fred/series/observations?series_id=${series}&api_key=${FRED_API_KEY}&sort_order=desc&limit=1&file_type=json" \
               2>/dev/null) || curl_exit=$?
@@ -49,7 +58,6 @@ jobs:
 
             if [ "${curl_exit}" -ne 0 ]; then
               echo "ERROR: curl network failure (exit code ${curl_exit}) for series ${series}" >&2
-              echo "       Possible causes: DNS failure, connection refused, TLS error" >&2
               exit 1
             fi
 
