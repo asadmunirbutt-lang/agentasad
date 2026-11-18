@@ -6,17 +6,55 @@ permalink: /404.html
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="robots" content="noindex">
   <title>Page Not Found | Agent Asad Realtor</title>
   <link rel="stylesheet" href="/assets/css/theme.css">
   <script>
-    // Redirect old .html URLs to their clean counterparts
     (function() {
       var path = window.location.pathname;
+      var segments = path.split('/').filter(Boolean);
+
+      // Case 1: .html extension → strip and redirect to clean URL
       if (path.endsWith('.html')) {
         var clean = path.replace(/\.html$/, '/');
         window.location.replace(clean);
+        return;
+      }
+
+      // Case 2: nested path like /page-a/page-b or /page-a/license/texas
+      // Strip first segment, redirect to remainder
+      if (segments.length >= 2) {
+        // Known top-level pages — if last segment matches, redirect there
+        var known = ['contact','about-us','blog','buyers-guide','sellers-guide','home-valuation',
+          'mortgage-calculator','first-time-buyer-programs','closing-costs-guide','market-report',
+          'school-districts','faq','testimonials','areas-served','relocation-guide',
+          'realtor-listings','zillow-listings','new-construction','investment-properties',
+          'open-houses','live-market','mock-exam','real-estate-license-exam','latham-ny-real-estate',
+          'colonie-ny-homes-for-sale','albany-ny-realtor'];
+
+        // If path is /x/license/state → redirect to /license/state/
+        if (segments.length >= 3 && segments[segments.length - 2] === 'license') {
+          window.location.replace('/license/' + segments[segments.length - 1] + '/');
+          return;
+        }
+        // If path is /x/posts/slug or /posts/something/something
+        if (segments.length >= 3 && (segments[0] === 'posts' || segments[segments.length - 2] === 'posts')) {
+          window.location.replace('/posts/' + segments[segments.length - 1] + '/');
+          return;
+        }
+        // 2-level path: strip first, go to second segment
+        if (segments.length === 2) {
+          var dest = '/' + segments[1] + '/';
+          window.location.replace(dest);
+          return;
+        }
+        // 3+ levels: strip first, keep rest
+        if (segments.length >= 3) {
+          var dest = '/' + segments.slice(1).join('/') + '/';
+          window.location.replace(dest);
+          return;
+        }
       }
     })();
   </script>
@@ -26,7 +64,10 @@ permalink: /404.html
     <h1 style="font-size:5rem; color:#d4a853; margin:0;">404</h1>
     <h2 style="color:#eef2f7; margin:16px 0 8px;">Page Not Found</h2>
     <p style="color:#7a8ba3; max-width:400px; margin:0 auto 24px;">The page you're looking for may have moved. If you clicked an old link, you'll be redirected automatically.</p>
-    <a href="/" style="background:#d4a853; color:#0b0e17; padding:12px 28px; border-radius:4px; text-decoration:none; font-weight:700;">Go Home</a>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <a href="/" style="background:#d4a853; color:#0b0e17; padding:12px 28px; border-radius:4px; text-decoration:none; font-weight:700;">Go Home</a>
+      <a href="/contact" style="border:1px solid rgba(212,168,83,0.4); color:#d4a853; padding:12px 28px; border-radius:4px; text-decoration:none; font-weight:600;">Contact Asad</a>
+    </div>
   </div>
 </body>
 </html>
