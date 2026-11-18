@@ -2,6 +2,8 @@ title: Agent Asad Realtor
 description: Real Estate Agent in Albany NY Capital Region — serving Latham, Colonie, Troy & beyond.
 url: https://agentasad.com
 permalink: pretty
+plugins:
+  - jekyll-redirect-from
 exclude:
   - README.md
   - "*.sh"
